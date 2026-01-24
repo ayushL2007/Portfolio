@@ -1,7 +1,6 @@
 require 'octokit'
 
 class PortfolioController < ApplicationController
-    @token = "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"
     def main
         fetch_repos
         @projects = @repos
