@@ -1,0 +1,89 @@
+<style>
+    /* THE CONTAINER: This handles the wrapping */
+    .projects-grid {
+        display: flex;
+        flex-wrap: wrap;        /* Allows tiles to move to the next line */
+        gap: 30px;              /* Space between tiles */
+        justify-content: center; /* Centers tiles in the row */
+        padding: 40px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .crystal-tile {
+        /* This math ensures 3 per row (accounting for gaps) */
+        flex: 1 1 calc(33.333% - 40px); 
+        min-width: 300px;       /* Prevents tiles from getting too skinny */
+        max-width: 400px;
+        
+        padding: 40px;
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.4); /* Increased opacity for light backgrounds */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        
+        text-align: center;
+        color: #444; /* Darker text for readability */
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .crystal-tile:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.6);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .crystal-tile h2 {
+        margin-top: 0;
+        letter-spacing: 1px;
+        font-size: 1.4rem;
+        color: #222;
+    }
+
+    .crystal-tile p {
+        font-weight: 400;
+        font-size: 0.95rem;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .crystal-tile button {
+        margin-top: 20px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 12px;
+        background: #4a0404; /* Matches your silver-red gradient theme */
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .crystal-tile button:hover {
+        background: #8b0000;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="projects-grid">
+    <% @projects.each do |project|%>
+        <div class="crystal-tile">
+            <div>
+                <h2><%= project.name %></h2>
+                <p><%= project.description %></p>
+            </div>
+            
+            <div class="tile-footer">
+                <button onclick="window.open('<%= project.svn_url %>', '_blank')">
+                    View Project
+                </button>
+            </div>
+        </div>
+    <% end %> 
+</div>
