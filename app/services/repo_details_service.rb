@@ -13,7 +13,7 @@ class RepoDetailsService
 
   def refresh_and_save
     # Your logic to generate the updated hash
-    fetch_repos(Rails.application.credentials.dig("GITHUB"))
+    fetch_repos(Rails.application.credentials.dig("GITHUB")||ENV["GITHUB"])
 
     updated_hash = {
       last_updated: Time.current,
@@ -73,4 +73,5 @@ class RepoDetailsService
       picks = [1130246938, 1134846947, 1019955323]
       @best_repos =  @repos.select {|r| picks.include?(r.id)}
   end
+
 end
