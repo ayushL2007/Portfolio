@@ -220,8 +220,12 @@
     "Java" => ["#f89720aa", "devicon-java-plain"],
     "XML" => ["#005fac89", "devicon-xml-plain"],
     "Native Android" => ["#3ddc858f", "devicon-android-plain"],
+    "C-Lang" => ["#5b94ffb2", "fa-solid fa-c"],
+    "Operating System" => ["#252525a1", "fa-brands fa-linux"]
   }
 %>
+
+<div id="projects"></div>
 
 <div class="tech-scroll-container">
   <div class="tech-scroll-track">
@@ -236,7 +240,7 @@
   </div>
 </div>
 
-<div class="projects-grid" id="projects">
+<div class="projects-grid">
     <%# 1. Best Projects %>
     <% best_projects.each_with_index do |project, index| %>
         <div class="crystal-tile">

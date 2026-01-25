@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   root "portfolio#main"
 
   get "/portfolio", to: "portfolio#main"
+
+  get "/resume", to: "portfolio#resume"
 end
