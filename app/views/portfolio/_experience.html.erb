@@ -1,0 +1,133 @@
+<style>
+    .experience-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    color: #2d3436;
+    }
+
+    /* The vertical track */
+    .timeline {
+    position: relative;
+    border-left: 3px solid #dfe6e9;
+    margin-left: 30px;
+    padding-left: 40px;
+    }
+
+    .timeline-item {
+    position: relative;
+    margin-bottom: 50px;
+    transition: transform 0.3s ease;
+    }
+
+    .timeline-item:hover {
+    transform: translateX(10px);
+    }
+
+    /* The clickable/visual dot */
+    .timeline-dot {
+    position: absolute;
+    left: -51.5px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: #6c5ce7;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 3px #6c5ce7;
+    }
+
+    .timeline-date {
+    font-weight: bold;
+    color: #6c5ce7;
+    margin-bottom: 10px;
+    }
+
+    .timeline-content {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .timeline-content h3 { margin: 0; font-size: 1.5rem; }
+    .timeline-content h4 { margin: 5px 0; color: #636e72; font-weight: 500; }
+</style>
+
+<section class="experience-section">
+  <h2 class="section-title">Work Experience</h2>
+
+  <div class="timeline">
+    <% # You can eventually move this data to a Model or a YAML file %>
+    <% experiences = [
+      { role: "Senior Developer", company: "Tech Corp", date: "2023 - Present", desc: "Built scalable Rails APIs." },
+      { role: "Web Designer", company: "Creative Hub", date: "2021 - 2023", desc: "Designed UI/UX for mobile apps." }
+    ] %>
+
+    <% experiences.each do |job| %>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date"><%= job[:date] %></div>
+        <div class="timeline-content">
+          <h3><%= job[:role] %></h3>
+          <h4><%= job[:company] %></h4>
+          <p><%= job[:desc] %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>
+
+<script>
+    /**
+     * Experience Timeline Animations
+     * This script detects when timeline items enter the viewport 
+     * and triggers a smooth CSS transition.
+     */
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const timelineItems = document.querySelectorAll(".timeline-item");
+
+    const observerOptions = {
+        threshold: 0.15, // Trigger when 15% of the element is visible
+        rootMargin: "0px 0px -50px 0px" // Slightly offset from the bottom
+    };
+
+    const revealOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            // Add the 'active' class to trigger CSS transitions
+            entry.target.classList.add("revealed");
+            // Stop observing once the animation has played
+            observer.unobserve(entry.target);
+        }
+        });
+    }, observerOptions);
+
+    timelineItems.forEach((item) => {
+        // Set initial styles via JS if not already in CSS
+        item.style.opacity = "0";
+        item.style.transform = "translateY(30px)";
+        item.style.transition = "all 0.6s ease-out";
+        
+        revealOnScroll.observe(item);
+    });
+    });
+
+    // Helper for the "Revealed" state
+    const style = document.createElement('style');
+    style.innerHTML = `
+    .timeline-item.revealed {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    `;
+    document.head.appendChild(style);
+</script>

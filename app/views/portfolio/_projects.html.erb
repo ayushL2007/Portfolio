@@ -1,32 +1,93 @@
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-    /* THE CONTAINER: This handles the wrapping */
+    /* 1. TECH SCROLL ANIMATION */
+    .tech-scroll-container {
+        width: 100%;
+        overflow-x: hidden;
+        min-height: 100px;
+        padding: 20px 0;
+        white-space: nowrap;
+        position: relative;
+
+        mask-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 1) 20%,
+            rgba(0, 0, 0, 1) 80%,
+            rgba(0, 0, 0, 0) 100%
+        );
+        -webkit-mask-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 1) 20%,
+            rgba(0, 0, 0, 1) 80%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
+
+    .tech-scroll-track {
+        display: flex;
+        width: max-content;
+        
+        gap: 20px;
+        animation: scroll-left 25s linear infinite;
+    }
+
+    .tech-scroll-container:hover .tech-scroll-track {
+        animation-play-state: paused;
+    }
+
+    .tech-pill {
+        padding: 6px;
+        min-width: 140px;
+        max-height: 5%;
+        text-align: center;
+        font-weight: 700;
+        color: white;
+        border-radius: 15%;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    /* Make sure the icons have a slight glow or contrast */
+    .tech-pill i {
+        color: white;
+        filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+    }
+
+    @keyframes scroll-left {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+
+    
+
+    /* 2. THE PROJECTS GRID & TILES */
     .projects-grid {
         display: flex;
-        flex-wrap: wrap;        /* Allows tiles to move to the next line */
-        gap: 30px;              /* Space between tiles */
-        justify-content: center; /* Centers tiles in the row */
+        flex-wrap: wrap;
+        gap: 30px;
+        justify-content: center;
         padding: 40px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .crystal-tile {
-        /* This math ensures 3 per row (accounting for gaps) */
         flex: 1 1 calc(33.333% - 40px); 
-        min-width: 300px;       /* Prevents tiles from getting too skinny */
+        min-width: 300px;
         max-width: 400px;
-        
         padding: 40px;
         border-radius: 24px;
-        background: rgba(255, 255, 255, 0.4); /* Increased opacity for light backgrounds */
+        background: rgba(255, 255, 255, 0.4);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        
         border: 1px solid rgba(255, 255, 255, 0.7);
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-        
         text-align: center;
-        color: #444; /* Darker text for readability */
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         flex-direction: column;
@@ -36,54 +97,219 @@
     .crystal-tile:hover {
         transform: translateY(-10px);
         background: rgba(255, 255, 255, 0.6);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
 
-    .crystal-tile h2 {
-        margin-top: 0;
-        letter-spacing: 1px;
-        font-size: 1.4rem;
-        color: #222;
+    /* Styling for the new image container */
+    .project-demo-container {
+        width: 100%;
+        height: 180px; /* Fixed height for consistency */
+        overflow: hidden;
+        border-radius: 16px; /* Slightly less than the tile for a nested look */
+        margin-bottom: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    .crystal-tile p {
-        font-weight: 400;
-        font-size: 0.95rem;
-        color: #666;
-        line-height: 1.6;
+    .project-demo-img {
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        object-fit: contain; /* Ensures image fills the area without stretching */
+        transition: transform 0.5s ease;
     }
 
-    .crystal-tile button {
-        margin-top: 20px;
-        padding: 12px 20px;
-        border: none;
-        border-radius: 12px;
-        background: #4a0404; /* Matches your silver-red gradient theme */
-        color: white;
-        font-weight: 600;
+    /* Zoom effect on tile hover */
+    .crystal-tile:hover .project-demo-img {
+        transform: scale(1.08);
+    }
+
+    /* 3. SLIDE TOGGLE LOGIC */
+    #extra-projects {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
+    }
+
+    #extra-projects.is-open {
+        max-height: 2500px;
+        opacity: 1;
+        margin-bottom: 30px;
+    }
+
+    /* 4. CIRCULAR BUTTON & ARROW */
+    .toggle-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin: 40px 0;
+    }
+
+    #toggle-projects-btn {
+        background: rgba(255, 255, 255, 0.3);
+        border: 1px solid #362c2c60;
+        color: #1b1717;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         cursor: pointer;
-        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        font-size: 1.2rem;
     }
 
-    .crystal-tile button:hover {
-        background: #8b0000;
-        transform: scale(1.05);
+    #toggle-projects-btn:hover {
+        background: #2e28286c;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    /* 5. HEADER PILL */
+    .content-header-pill {
+        width: fit-content;
+        padding: 15px 40px;
+        margin: 40px auto;
+        border-radius: 25%;
+        background: var(--pill-color, rgba(255, 255, 255, 0.4));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    .project-action {
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .project-link-icon {
+        font-size: 2rem;
+        width: 70%;
+        color: #4a0404;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 10px;
+        opacity: 0.8;
+    }
+
+    .project-link-icon:hover {
+        transform: scale(1.2);
+        opacity: 1;
+        color: #8b0000;
     }
 </style>
 
-<div class="projects-grid">
-    <% @projects.each do |project|%>
-        <div class="crystal-tile">
-            <div>
-                <h2><%= project.name %></h2>
-                <p><%= project.description %></p>
-            </div>
-            
-            <div class="tile-footer">
-                <button onclick="window.open('<%= project.svn_url %>', '_blank')">
-                    View Project
-                </button>
-            </div>
+<%
+  # Mapping: Name => [Color, Devicon_Class]
+  tech_tags = {
+    "HTML" => ["#e34c26a3", "devicon-html5-plain"],
+    "CSS" => ["#264ce49f", "devicon-css3-plain"],
+    "Javascript" => ["#f7de1ebe", "devicon-javascript-plain"],
+    "Ruby" => ["#cc000091", "devicon-ruby-plain"],
+    "Rails" => ["#d3000091", "devicon-rails-plain"],
+    "Full Stack" => ["#4a040493", "devicon-webpack-plain"],
+    "Java" => ["#f89720aa", "devicon-java-plain"],
+    "XML" => ["#005fac89", "devicon-xml-plain"],
+    "Native Android" => ["#3ddc858f", "devicon-android-plain"],
+  }
+%>
+
+<div class="tech-scroll-container">
+  <div class="tech-scroll-track">
+    <% 2.times do %>
+      <% tech_tags.each do |name, (color, icon_class)| %>
+        <div class="tech-pill" style="background: <%= color %>; border: 1px solid rgba(255,255,255,0.3);">
+          <i class="<%= icon_class %>" style="font-size: 1.2rem; margin-right: 8px;"></i>
+          <span><%= name %></span>
         </div>
-    <% end %> 
+      <% end %>
+    <% end %>
+  </div>
 </div>
+
+<div class="projects-grid" id="projects">
+    <%# 1. Best Projects %>
+    <% best_projects.each_with_index do |project, index| %>
+        <div class="crystal-tile">
+    <%# 1. Image Container %>
+    <div class="project-demo-container">
+        <%# Ensure your files in assets/images are named exactly "demo (1).png", etc. %>
+        <%= image_tag "demo (#{index+1}).png", alt: "#{project["name"]} Demo", class: "project-demo-img" %>
+    </div>
+
+    <%# 2. Text Content %>
+    <div>
+        <h2><%= project["name"] %></h2>
+        <p><%= project["description"] %></p>
+    </div>
+
+    <%# 3. Action Icon (Fixed Syntax) %>
+    <div class="project-action">
+        <i onclick="window.open('<%= project["svn_url"] %>', '_blank')" 
+           class="devicon-github-original project-link-icon" 
+           title="View Source"></i>
+        <%if index==0%>
+            <i onclick="window.open('https://course-craft-3.onrender.com', '_blank')" 
+           class="fa-solid fa-link project-link-icon" 
+           title="View Source"></i>
+        <%elsif index==1%>
+            <i onclick="window.open('https://signetic.vercel.app', '_blank')" 
+           class="fa-solid fa-link project-link-icon" 
+           title="View Source"></i>
+        <%end%>
+    </div>
+</div>
+    <% end %>
+
+    <%# 2. Extra Projects Wrapper %>
+    <div id="extra-projects">
+        <% projects.each do |project| %>
+            <div class="crystal-tile">
+                <div>
+                    <h2><%= project["name"] %></h2>
+                    <p><%= project["description"] %></p>
+                </div>
+
+                <div class="project-action">
+                    <i onclick="window.open('<%= project["svn_url"] %>', '_blank')" 
+                    class="devicon-github-original project-link-icon" 
+                    title="View Source"></i>
+                </div>
+            </div>
+        <% end %>
+    </div>
+
+    <%# 3. Toggle Button %>
+    <div class="toggle-container">
+        <button id="toggle-projects-btn" onclick="toggleProjects()">
+            <span id="arrow">▼</span>
+        </button>
+    </div>
+</div>
+
+<script>
+function toggleProjects() {
+    const container = document.getElementById('extra-projects');
+    const arrow = document.getElementById('arrow');
+    
+    container.classList.toggle('is-open');
+    
+    if (container.classList.contains('is-open')) {
+        arrow.innerHTML = '▲';
+        setTimeout(() => {
+            arrow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 200);
+    } else {
+        arrow.innerHTML = '▼';
+    }
+}
+</script>

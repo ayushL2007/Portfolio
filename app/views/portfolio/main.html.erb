@@ -139,9 +139,8 @@
             </div>
         </div>
 </div>
+<hr style="min-width: 90%; max-height: 10px; background-color: black; margin-bottom: 20px;"></hr>
 
-
-<%=render 'projects'%>
 
 <script>
     window.addEventListener('scroll', () => {
@@ -167,3 +166,6 @@
         }
     });
 </script>
+
+<%=render 'projects', projects: @projects, languages: @languages, best_projects: @best_repos%>
+<%= render 'experience' %>
