@@ -151,6 +151,7 @@
     .spacer { width: 24px; justify-self: end; } 
 </style>
 
+
 <nav class="navbar">
     <div class="nav-container">
         <i class="fa-solid fa-house home-icon" onclick="setActive(this, '#home', event)"></i>
@@ -169,41 +170,80 @@
                 </div>
             </li>
         </ul>
-
             <i class="fa-regular fa-file-lines resume-icon"
-            onclick="window.open('/resume', '_blank')"></i>
+            onclick="window.open('/resume', '_blank')" title="Resume"></i>
         <div class="spacer"></div>
     </div>
 </nav>
-
 <script>
+    // 1. NAVIGATION LOGIC (No Audio trigger here)
     function setActive(element, name, event) {
-        event.preventDefault();
-        window.location.hash = name;
+        if (event) event.preventDefault();
         
-        // Remove 'active' from all links and the home icon
-        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-        document.querySelector(".home-icon").classList.remove('active');
+        // Update URL hash without snap
+        history.pushState(null, null, name);
         
-        // Collapse Contact menu
-        document.getElementById('contactWrapper').classList.remove('expanded');
-        
-        // Set active to current element
-        element.classList.add('active');
+        // Smooth scroll to target
+        const target = document.querySelector(name);
+        if (target) {
+            target.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Update the purple active state
+        updateNavbarUI(name.replace('#', ''));
     }
 
+    // 2. UI UPDATE LOGIC (Controls the purple color)
+    function updateNavbarUI(id) {
+        // Clear all active states
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        const homeIcon = document.querySelector(".home-icon");
+        if(homeIcon) homeIcon.classList.remove('active');
+
+        // Apply new active state
+        if (id === 'home') {
+            if(homeIcon) homeIcon.classList.add('active');
+        } else {
+            const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+            if (activeLink) activeLink.classList.add('active');
+        }
+    }
+
+    // 3. CONTACT MENU LOGIC
     function toggleContact(event, element) {
-        // Toggle the horizontal width expansion class
-        const wrapper = document.getElementById('contactWrapper');
-        wrapper.classList.add('expanded');
+        document.getElementById('contactWrapper').classList.add('expanded');
     }
 
     function handleContactMouseLeave() {
-        const wrapper = document.getElementById('contactWrapper');
-        wrapper.classList.remove('expanded');
-        
-        // Only remove purple if 'Contact' isn't the current active page
-        // (Usually Contact doesn't have a hash in your logic, so we remove it)
-        document.getElementById('contactBtn').classList.remove('active');
+        document.getElementById('contactWrapper').classList.remove('expanded');
     }
+
+    // 4. SCROLL OBSERVER (The "Auto-Change URL" logic)
+    document.addEventListener("DOMContentLoaded", () => {
+        // Target your specific section IDs
+        const sections = document.querySelectorAll('#home, #projects, #experience, #education');
+
+        const scrollOptions = {
+            root: null,
+            rootMargin: '-45% 0px -45% 0px', // Updates URL when section is in the center
+            threshold: 0
+        };
+
+        const urlObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    if (id) {
+                        history.replaceState(null, null, `#${id}`);
+                        updateNavbarUI(id);
+                    }
+                }
+            });
+        }, scrollOptions);
+
+        sections.forEach(section => urlObserver.observe(section));
+    });
 </script>

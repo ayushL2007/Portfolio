@@ -23,8 +23,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body id="myBody">
+    <%= audio_tag "lofi_bg.mp3", id: "lofi-player", loop: true %>
     <%= render 'shared/header'%>
+    <%= render 'shared/animation' %>
     <%= yield %>
   </body>
 </html>

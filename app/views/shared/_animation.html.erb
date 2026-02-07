@@ -1,0 +1,170 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+    /* 1. Theme Variables */
+    :root {
+        --bg-day: #f0f0f0;
+        --bg-night: #1a1a2e;
+        --sun-color: #FFD700;
+        --moon-color: #f1c40f;
+    }
+
+    /* 2. Body styling */
+    body {
+        background-color: var(--bg-day);
+        transition: background-color 0.8s ease;
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+    }
+
+    body.dark-mode {
+        background-color: var(--bg-night);
+    }
+
+    /* 3. Common Toggle Button Styles */
+    .toggle-btn, .audio-toggle-btn {
+        position: fixed;
+        top: 30px;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+        z-index: 1000;
+    }
+
+    .toggle-btn { right: 30px; }
+    .audio-toggle-btn { left: 30px; }
+
+    #icon, #audio-icon {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    /* 4. Theme Icon Specifics */
+    #icon {
+        background-color: var(--sun-color);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        color: #b58b00;
+    }
+
+    body.dark-mode #icon {
+        background-color: transparent;
+        box-shadow: inset -15px -10px 0px 0px var(--moon-color);
+        transform: rotate(-20deg);
+        color: var(--moon-color);
+    }
+    
+    /* Hide the sun icon visually when it transforms into the moon crescent */
+    body.dark-mode #theme-fa-icon {
+        opacity: 0;
+    }
+
+    /* 5. Audio Icon Specifics */
+    #audio-icon {
+        background-color: #bdc3c7;
+        color: white;
+    }
+
+    .audio-active #audio-icon {
+        background-color: #2ecc71;
+        box-shadow: 0 0 15px rgba(46, 204, 113, 0.6);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        70% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+</style>
+
+<div class="audio-toggle-btn" onclick="toggleAudio()">
+    <div id="audio-icon">
+        <i class="fas fa-volume-mute" id="audio-fa-icon"></i>
+    </div>
+</div>
+
+<div class="toggle-btn" onclick="toggleTheme()">
+    <div id="icon">
+        <i class="fas fa-sun" id="theme-fa-icon" style="transform: scale(1.2);"></i>
+    </div>
+</div>
+
+<script>
+    const audio = document.getElementById('lofi-player');
+    const body = document.body;
+    let fadeInterval;
+
+    // 1. Unified Theme Update Function
+    function applyTheme(isDark) {
+        const icon = document.getElementById('audio-fa-icon');
+        
+        if (isDark) {
+            body.classList.add('dark-mode');
+            fadeAudio(0.2); // Your night volume
+        } else {
+            body.classList.remove('dark-mode');
+            fadeAudio(0.5); // Your day volume
+        }
+    }
+
+    // 2. The Slow Fade Logic
+    function fadeAudio(targetVolume) {
+        if (!audio) return;
+        clearInterval(fadeInterval);
+
+        const step = 0.01;
+        const speed = 20;
+
+        fadeInterval = setInterval(() => {
+            if (audio.volume < targetVolume - step) {
+                audio.volume += step;
+            } else if (audio.volume > targetVolume + step) {
+                audio.volume -= step;
+            } else {
+                audio.volume = targetVolume;
+                clearInterval(fadeInterval);
+            }
+        }, speed);
+    }
+
+    // 3. Manual Toggle Button
+    function toggleTheme() {
+        const isCurrentlyDark = body.classList.contains('dark-mode');
+        applyTheme(!isCurrentlyDark);
+    }
+
+    // 4. System Sync Logic
+    const systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    // Initialize on page load based on system default
+    applyTheme(systemQuery.matches);
+
+    // Listen for system changes (e.g., if OS switches to dark mode)
+    systemQuery.addEventListener('change', (e) => {
+        applyTheme(e.matches);
+    });
+
+    // 5. Audio Play/Pause Controls
+    function toggleAudio() {
+        const btn = document.querySelector('.audio-toggle-btn');
+        const icon = document.getElementById('audio-fa-icon');
+        
+        if (audio.paused) {
+            audio.play();
+            btn.classList.add('audio-active');
+            icon.classList.replace('fa-volume-mute', 'fa-volume-up');
+        } else {
+            audio.pause();
+            btn.classList.remove('audio-active');
+            icon.classList.replace('fa-volume-up', 'fa-volume-mute');
+        }
+    }
+
+</script>
