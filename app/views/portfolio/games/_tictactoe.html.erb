@@ -1,0 +1,227 @@
+<style>
+    .ttt-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .ttt-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 8px;
+    }
+
+    .ttt-status {
+        font-size: 1.1rem;
+        color: #ccc;
+        margin-bottom: 20px;
+        min-height: 30px;
+        text-align: center;
+    }
+
+    .ttt-board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        width: 300px;
+        height: 300px;
+    }
+
+    .ttt-cell {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+    }
+
+    .ttt-cell:hover {
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    .ttt-cell.x { color: #e74c3c; }
+    .ttt-cell.o { color: #3498db; }
+
+    .ttt-cell.win {
+        background: rgba(46, 204, 113, 0.25);
+        border-color: rgba(46, 204, 113, 0.5);
+    }
+
+    .ttt-restart {
+        margin-top: 24px;
+        padding: 12px 36px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .ttt-restart:hover {
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    .ttt-score {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 16px;
+        color: #aaa;
+        font-size: 0.95rem;
+        font-weight: 600;
+    }
+
+    .ttt-score span { color: white; }
+
+    @media (max-width: 480px) {
+        .ttt-board {
+            width: 260px;
+            height: 260px;
+        }
+        .ttt-cell { font-size: 2rem; border-radius: 12px; }
+    }
+</style>
+
+<div class="ttt-container">
+    <div class="ttt-title">Tic-Tac-Toe</div>
+    <div class="ttt-score">
+        You (X): <span id="ttt-player-score">0</span> &nbsp;|&nbsp;
+        AI (O): <span id="ttt-ai-score">0</span>
+    </div>
+    <div class="ttt-status" id="ttt-status">Your turn (X)</div>
+    <div class="ttt-board" id="ttt-board"></div>
+    <button class="ttt-restart" onclick="tttRestart()">Restart</button>
+</div>
+
+<script>
+(function() {
+    let board, currentPlayer, gameOver, playerScore = 0, aiScore = 0;
+
+    const winCombos = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+    ];
+
+    function init() {
+        board = Array(9).fill('');
+        currentPlayer = 'X';
+        gameOver = false;
+        const boardEl = document.getElementById('ttt-board');
+        boardEl.innerHTML = '';
+        for (let i = 0; i < 9; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'ttt-cell';
+            cell.dataset.index = i;
+            cell.addEventListener('click', () => handleClick(i));
+            boardEl.appendChild(cell);
+        }
+        document.getElementById('ttt-status').textContent = 'Your turn (X)';
+    }
+
+    function handleClick(index) {
+        if (board[index] || gameOver || currentPlayer !== 'X') return;
+        makeMove(index, 'X');
+        if (!gameOver) {
+            currentPlayer = 'O';
+            document.getElementById('ttt-status').textContent = 'AI thinking...';
+            setTimeout(aiMove, 400);
+        }
+    }
+
+    function makeMove(index, player) {
+        board[index] = player;
+        const cells = document.querySelectorAll('.ttt-cell');
+        cells[index].textContent = player;
+        cells[index].classList.add(player.toLowerCase());
+
+        const winner = checkWin(player);
+        if (winner) {
+            gameOver = true;
+            winner.forEach(i => cells[i].classList.add('win'));
+            if (player === 'X') {
+                playerScore++;
+                document.getElementById('ttt-player-score').textContent = playerScore;
+                document.getElementById('ttt-status').textContent = 'You win!';
+            } else {
+                aiScore++;
+                document.getElementById('ttt-ai-score').textContent = aiScore;
+                document.getElementById('ttt-status').textContent = 'AI wins!';
+            }
+            return;
+        }
+
+        if (board.every(c => c !== '')) {
+            gameOver = true;
+            document.getElementById('ttt-status').textContent = "It's a draw!";
+        }
+    }
+
+    function checkWin(player) {
+        for (const combo of winCombos) {
+            if (combo.every(i => board[i] === player)) return combo;
+        }
+        return null;
+    }
+
+    function aiMove() {
+        // Try to win
+        let move = findBestMove('O');
+        // Try to block
+        if (move === -1) move = findBestMove('X');
+        // Take center
+        if (move === -1 && !board[4]) move = 4;
+        // Take corner
+        if (move === -1) {
+            const corners = [0, 2, 6, 8].filter(i => !board[i]);
+            if (corners.length) move = corners[Math.floor(Math.random() * corners.length)];
+        }
+        // Take any
+        if (move === -1) {
+            const empty = board.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
+            if (empty.length) move = empty[Math.floor(Math.random() * empty.length)];
+        }
+
+        if (move !== -1) {
+            makeMove(move, 'O');
+        }
+        if (!gameOver) {
+            currentPlayer = 'X';
+            document.getElementById('ttt-status').textContent = 'Your turn (X)';
+        }
+    }
+
+    function findBestMove(player) {
+        for (const combo of winCombos) {
+            const values = combo.map(i => board[i]);
+            const playerCount = values.filter(v => v === player).length;
+            const emptyCount = values.filter(v => v === '').length;
+            if (playerCount === 2 && emptyCount === 1) {
+                return combo.find(i => board[i] === '');
+            }
+        }
+        return -1;
+    }
+
+    window.tttRestart = init;
+
+    // Initialize on game open
+    window.addEventListener('game-opened', (e) => {
+        if (e.detail.game === 'tictactoe') init();
+    });
+
+    init();
+})();
+</script>

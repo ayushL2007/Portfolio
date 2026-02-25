@@ -285,6 +285,7 @@
             <li><a href="#projects" class="nav-link" onclick="setActive(this, '#projects', event)">Projects</a></li>
             <li><a href="#experience" class="nav-link" onclick="setActive(this, '#experience', event)">Experience</a></li>
             <li><a href="#education" class="nav-link" onclick="setActive(this, '#education', event)">Education</a></li>
+            <li><a href="/games" class="nav-link" onclick="event.stopPropagation()">Games</a></li>
             
             <li class="contact-item" id="contactWrapper" onmouseenter="toggleContact(event, this)" onmouseleave="handleContactMouseLeave()">
                 <a href="javascript:void(0)" style="margin-top: 5px;" class="nav-link" id="contactBtn">Contact</a>
@@ -315,6 +316,7 @@
     <a href="#projects" onclick="mobileNavTo('#projects', event)">Projects</a>
     <a href="#experience" onclick="mobileNavTo('#experience', event)">Experience</a>
     <a href="#education" onclick="mobileNavTo('#education', event)">Education</a>
+    <a href="/games" onclick="closeMobileDrawer()">Games</a>
     <div class="mobile-social-icons">
         <a onclick="window.open('https://www.linkedin.com/in/ayush-lahiri')" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
         <a onclick="window.open('https://github.com/ayushL2007')" title="GitHub"><i class="fa-brands fa-github"></i></a>
