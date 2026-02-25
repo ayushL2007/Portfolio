@@ -4,13 +4,13 @@
 
 <style>
     body {
-        background-color: #f0f0f0;
+        background-color: #e8e4f0;
         margin: 0;
         min-height: 100vh;
         overflow-x: hidden;
     }
 
-    /* --- BACK BUTTON --- */
+    /* --- BACK BUTTON (Clay Pill) --- */
     .games-back-btn {
         position: fixed;
         top: 28px;
@@ -19,14 +19,17 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 10px 22px;
+        padding: 12px 26px;
         border-radius: 50px;
-        background: rgba(255, 255, 255, 0.5);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: #e8e4f0;
+        border: none;
+        box-shadow:
+            8px 8px 16px rgba(0, 0, 0, 0.12),
+            -6px -6px 14px rgba(255, 255, 255, 0.7),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.6),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.06);
         text-decoration: none;
-        color: #333;
+        color: #4a4060;
         font-weight: 700;
         font-size: 0.95rem;
         cursor: pointer;
@@ -34,9 +37,13 @@
     }
 
     .games-back-btn:hover {
-        background: rgba(128, 0, 128, 0.1);
-        color: purple;
+        color: #7c3aed;
         transform: translateX(-3px);
+        box-shadow:
+            10px 10px 20px rgba(0, 0, 0, 0.14),
+            -8px -8px 18px rgba(255, 255, 255, 0.8),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.7),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.08);
     }
 
     /* --- PAGE TITLE --- */
@@ -49,14 +56,15 @@
         font-family: 'Segoe UI', sans-serif;
         font-size: 2.8rem;
         font-weight: 800;
-        color: #1a1a1a;
+        color: #2d2248;
         margin-bottom: 12px;
         letter-spacing: -1px;
+        text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
     }
 
     .games-hero p {
         font-size: 1.15rem;
-        color: #666;
+        color: #6b5f80;
         max-width: 500px;
         margin: 0 auto;
         line-height: 1.6;
@@ -66,82 +74,216 @@
     .games-grid {
         display: flex;
         flex-wrap: wrap;
-        gap: 28px;
+        gap: 32px;
         justify-content: center;
         padding: 20px 40px 80px 40px;
         max-width: 1100px;
         margin: 0 auto;
     }
 
+    /* --- CLAYMORPHISM CARD --- */
     .game-card {
-        flex: 1 1 calc(33.333% - 28px);
+        flex: 1 1 calc(33.333% - 32px);
         min-width: 280px;
         max-width: 340px;
-        padding: 32px 28px;
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.45);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+        padding: 36px 28px;
+        border-radius: 32px;
+        border: none;
         text-align: center;
         cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 16px;
+        gap: 18px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Per-card clay colors */
+    .game-card[data-game="tictactoe"] {
+        background: #f8d7d7;
+        box-shadow:
+            10px 10px 20px rgba(180, 80, 80, 0.18),
+            -8px -8px 18px rgba(255, 255, 255, 0.65),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.7),
+            inset -2px -2px 5px rgba(180, 80, 80, 0.12);
+    }
+
+    .game-card[data-game="tetris"] {
+        background: #d0e4f7;
+        box-shadow:
+            10px 10px 20px rgba(60, 120, 180, 0.18),
+            -8px -8px 18px rgba(255, 255, 255, 0.65),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.7),
+            inset -2px -2px 5px rgba(60, 120, 180, 0.12);
+    }
+
+    .game-card[data-game="pokemon"] {
+        background: #fce8c8;
+        box-shadow:
+            10px 10px 20px rgba(200, 140, 50, 0.18),
+            -8px -8px 18px rgba(255, 255, 255, 0.65),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.7),
+            inset -2px -2px 5px rgba(200, 140, 50, 0.12);
+    }
+
+    .game-card[data-game="dino"] {
+        background: #ddd8e4;
+        box-shadow:
+            10px 10px 20px rgba(90, 80, 110, 0.18),
+            -8px -8px 18px rgba(255, 255, 255, 0.65),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.7),
+            inset -2px -2px 5px rgba(90, 80, 110, 0.12);
+    }
+
+    .game-card[data-game="snake"] {
+        background: #ceecd8;
+        box-shadow:
+            10px 10px 20px rgba(50, 140, 80, 0.18),
+            -8px -8px 18px rgba(255, 255, 255, 0.65),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.7),
+            inset -2px -2px 5px rgba(50, 140, 80, 0.12);
     }
 
     .game-card:hover {
-        transform: translateY(-8px) scale(1.02);
-        background: rgba(255, 255, 255, 0.65);
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        transform: translateY(-8px) scale(1.03);
     }
 
+    .game-card[data-game="tictactoe"]:hover {
+        box-shadow:
+            14px 14px 28px rgba(180, 80, 80, 0.22),
+            -10px -10px 22px rgba(255, 255, 255, 0.75),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.8),
+            inset -3px -3px 6px rgba(180, 80, 80, 0.15);
+    }
+    .game-card[data-game="tetris"]:hover {
+        box-shadow:
+            14px 14px 28px rgba(60, 120, 180, 0.22),
+            -10px -10px 22px rgba(255, 255, 255, 0.75),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.8),
+            inset -3px -3px 6px rgba(60, 120, 180, 0.15);
+    }
+    .game-card[data-game="pokemon"]:hover {
+        box-shadow:
+            14px 14px 28px rgba(200, 140, 50, 0.22),
+            -10px -10px 22px rgba(255, 255, 255, 0.75),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.8),
+            inset -3px -3px 6px rgba(200, 140, 50, 0.15);
+    }
+    .game-card[data-game="dino"]:hover {
+        box-shadow:
+            14px 14px 28px rgba(90, 80, 110, 0.22),
+            -10px -10px 22px rgba(255, 255, 255, 0.75),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.8),
+            inset -3px -3px 6px rgba(90, 80, 110, 0.15);
+    }
+    .game-card[data-game="snake"]:hover {
+        box-shadow:
+            14px 14px 28px rgba(50, 140, 80, 0.22),
+            -10px -10px 22px rgba(255, 255, 255, 0.75),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.8),
+            inset -3px -3px 6px rgba(50, 140, 80, 0.15);
+    }
+
+    /* --- CLAY ICON BUBBLE --- */
     .game-card-icon {
-        width: 72px;
-        height: 72px;
-        border-radius: 20px;
+        width: 76px;
+        height: 76px;
+        border-radius: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 2rem;
         color: white;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        border: none;
+    }
+
+    .game-card[data-game="tictactoe"] .game-card-icon {
+        background: #e05a5a;
+        box-shadow:
+            6px 6px 14px rgba(180, 50, 50, 0.3),
+            -4px -4px 10px rgba(255, 140, 140, 0.35),
+            inset 2px 2px 4px rgba(255, 200, 200, 0.5),
+            inset -2px -2px 4px rgba(140, 30, 30, 0.2);
+    }
+
+    .game-card[data-game="tetris"] .game-card-icon {
+        background: #4a9fd8;
+        box-shadow:
+            6px 6px 14px rgba(40, 100, 170, 0.3),
+            -4px -4px 10px rgba(130, 190, 255, 0.35),
+            inset 2px 2px 4px rgba(180, 220, 255, 0.5),
+            inset -2px -2px 4px rgba(30, 70, 130, 0.2);
+    }
+
+    .game-card[data-game="pokemon"] .game-card-icon {
+        background: #e8a830;
+        box-shadow:
+            6px 6px 14px rgba(190, 130, 20, 0.3),
+            -4px -4px 10px rgba(255, 210, 120, 0.35),
+            inset 2px 2px 4px rgba(255, 230, 170, 0.5),
+            inset -2px -2px 4px rgba(150, 100, 10, 0.2);
+    }
+
+    .game-card[data-game="dino"] .game-card-icon {
+        background: #6b5f80;
+        box-shadow:
+            6px 6px 14px rgba(60, 50, 80, 0.3),
+            -4px -4px 10px rgba(160, 150, 180, 0.35),
+            inset 2px 2px 4px rgba(200, 190, 220, 0.5),
+            inset -2px -2px 4px rgba(40, 30, 60, 0.2);
+    }
+
+    .game-card[data-game="snake"] .game-card-icon {
+        background: #3daa60;
+        box-shadow:
+            6px 6px 14px rgba(30, 120, 60, 0.3),
+            -4px -4px 10px rgba(120, 220, 150, 0.35),
+            inset 2px 2px 4px rgba(160, 240, 190, 0.5),
+            inset -2px -2px 4px rgba(20, 90, 40, 0.2);
     }
 
     .game-card h3 {
         font-family: 'Segoe UI', sans-serif;
         font-size: 1.25rem;
         font-weight: 700;
-        color: #222;
+        color: #2d2248;
         margin: 0;
     }
 
     .game-card p {
         font-size: 0.9rem;
-        color: #777;
+        color: #6b5f80;
         line-height: 1.5;
         margin: 0;
     }
 
+    /* --- CLAY PLAY BUTTON --- */
     .game-card .play-tag {
-        padding: 6px 24px;
+        padding: 8px 28px;
         border-radius: 50px;
         font-size: 0.85rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1px;
-        border: 2px solid #333;
-        color: #333;
-        background: transparent;
+        border: none;
+        color: #4a4060;
+        background: rgba(255, 255, 255, 0.5);
+        box-shadow:
+            4px 4px 10px rgba(0, 0, 0, 0.08),
+            -3px -3px 8px rgba(255, 255, 255, 0.6),
+            inset 1px 1px 3px rgba(255, 255, 255, 0.7),
+            inset -1px -1px 2px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
     }
 
     .game-card:hover .play-tag {
-        background: #333;
-        color: white;
+        color: #2d2248;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow:
+            6px 6px 14px rgba(0, 0, 0, 0.1),
+            -4px -4px 10px rgba(255, 255, 255, 0.8),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.06);
     }
 
     /* --- GAME MODAL OVERLAY --- */
@@ -150,8 +292,8 @@
         position: fixed;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px);
+        background: rgba(30, 22, 50, 0.9);
+        backdrop-filter: blur(10px);
         z-index: 2000;
         flex-direction: column;
         align-items: center;
@@ -169,23 +311,33 @@
         top: 20px;
         right: 24px;
         z-index: 2001;
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.25);
-        color: white;
-        font-size: 1.4rem;
+        background: #e8e4f0;
+        border: none;
+        color: #4a4060;
+        font-size: 1.3rem;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
+        box-shadow:
+            5px 5px 12px rgba(0, 0, 0, 0.2),
+            -4px -4px 10px rgba(255, 255, 255, 0.15),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.6),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .game-modal-close:hover {
-        background: rgba(255,255,255,0.3);
         transform: scale(1.1);
+        color: #7c3aed;
+        box-shadow:
+            7px 7px 16px rgba(0, 0, 0, 0.25),
+            -5px -5px 12px rgba(255, 255, 255, 0.2),
+            inset 3px 3px 5px rgba(255, 255, 255, 0.7),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.12);
     }
 
     .game-modal-content {
@@ -204,7 +356,7 @@
         .games-back-btn {
             top: 16px;
             left: 16px;
-            padding: 8px 16px;
+            padding: 10px 18px;
             font-size: 0.85rem;
         }
 
@@ -222,14 +374,14 @@
 
         .games-grid {
             padding: 10px 16px 60px 16px;
-            gap: 18px;
+            gap: 22px;
         }
 
         .game-card {
             flex: 1 1 100%;
             min-width: 0;
             max-width: 100%;
-            padding: 24px 20px;
+            padding: 28px 22px;
         }
 
         .game-modal-content {
@@ -258,8 +410,8 @@
 
 <!-- Game Cards Grid -->
 <div class="games-grid">
-    <div class="game-card" onclick="openGame('tictactoe')">
-        <div class="game-card-icon" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+    <div class="game-card" data-game="tictactoe" onclick="openGame('tictactoe')">
+        <div class="game-card-icon">
             <i class="fa-solid fa-xmarks-lines"></i>
         </div>
         <h3>Tic-Tac-Toe</h3>
@@ -267,8 +419,8 @@
         <span class="play-tag">Play</span>
     </div>
 
-    <div class="game-card" onclick="openGame('tetris')">
-        <div class="game-card-icon" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+    <div class="game-card" data-game="tetris" onclick="openGame('tetris')">
+        <div class="game-card-icon">
             <i class="fa-solid fa-cubes"></i>
         </div>
         <h3>Tetris</h3>
@@ -276,8 +428,8 @@
         <span class="play-tag">Play</span>
     </div>
 
-    <div class="game-card" onclick="openGame('pokemon')">
-        <div class="game-card-icon" style="background: linear-gradient(135deg, #f39c12, #e67e22);">
+    <div class="game-card" data-game="pokemon" onclick="openGame('pokemon')">
+        <div class="game-card-icon">
             <i class="fa-solid fa-question"></i>
         </div>
         <h3>Guess the Pokemon</h3>
@@ -285,8 +437,8 @@
         <span class="play-tag">Play</span>
     </div>
 
-    <div class="game-card" onclick="openGame('dino')">
-        <div class="game-card-icon" style="background: linear-gradient(135deg, #555, #333);">
+    <div class="game-card" data-game="dino" onclick="openGame('dino')">
+        <div class="game-card-icon">
             <i class="fa-solid fa-dragon"></i>
         </div>
         <h3>Chrome Dino</h3>
@@ -294,8 +446,8 @@
         <span class="play-tag">Play</span>
     </div>
 
-    <div class="game-card" onclick="openGame('snake')">
-        <div class="game-card-icon" style="background: linear-gradient(135deg, #27ae60, #1e8449);">
+    <div class="game-card" data-game="snake" onclick="openGame('snake')">
+        <div class="game-card-icon">
             <i class="fa-solid fa-worm"></i>
         </div>
         <h3>Snake</h3>
