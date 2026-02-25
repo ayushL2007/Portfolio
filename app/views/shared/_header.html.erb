@@ -18,17 +18,14 @@
         align-items: center;
         z-index: 1000;
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        overflow: hidden; /* Clips content during growth */
+        overflow: hidden;
         
-        /* Initial Animation State */
         width: 0;
         opacity: 0;
         animation: expandNav 3.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         animation-delay: 1.6s;
-
     }
 
-    /* Nav container fade-in happens after the bar expands */
     .nav-container {
         width: 100%;
         display: grid;
@@ -147,13 +144,142 @@
         transform: scale(1.4);
     }
 
-    .spacer { width: 24px; justify-self: end; } 
+    .spacer { width: 24px; justify-self: end; }
+
+    /* --- HAMBURGER BUTTON (hidden on desktop) --- */
+    .hamburger-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px;
+        z-index: 1001;
+    }
+
+    .hamburger-btn span {
+        display: block;
+        width: 22px;
+        height: 2.5px;
+        background-color: #333;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .hamburger-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* --- MOBILE DRAWER --- */
+    .mobile-drawer {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(169, 168, 168, 0.97);
+        backdrop-filter: blur(20px);
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+    }
+
+    .mobile-drawer.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .mobile-drawer a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 700;
+        font-size: 1.5rem;
+        padding: 10px 30px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-drawer a.active {
+        color: purple;
+    }
+
+    .mobile-drawer a:hover {
+        color: purple;
+        background: rgba(128, 0, 128, 0.08);
+    }
+
+    .mobile-drawer .mobile-social-icons {
+        display: flex;
+        gap: 25px;
+        margin-top: 10px;
+    }
+
+    .mobile-drawer .mobile-social-icons a {
+        font-size: 1.4rem;
+        padding: 10px;
+    }
+
+    /* --- MOBILE STYLES --- */
+    @media (max-width: 768px) {
+        @keyframes expandNav {
+            0% { width: 0%; opacity: 0; }
+            100% { width: 90%; max-width: 400px; opacity: 1; }
+        }
+
+        .navbar {
+            height: 54px;
+            top: 12px;
+        }
+
+        .nav-container {
+            grid-template-columns: auto 1fr auto;
+            padding: 0 18px;
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .hamburger-btn {
+            display: flex;
+            justify-self: center;
+        }
+
+        .mobile-drawer {
+            display: flex;
+        }
+
+        .resume-icon {
+            transform: scale(1.1);
+        }
+
+        .home-icon {
+            transform: scale(1.1);
+        }
+
+        .spacer {
+            display: none;
+        }
+    }
 </style>
 
 
 <nav class="navbar">
     <div class="nav-container">
-        <i class="fa-solid fa-house home-icon" onclick="setActive(this, '#home', event)"></i>
+        <i class="fa-solid fa-house home-icon" onclick="setActive(this, '#home', event); closeMobileDrawer();"></i>
 
         <ul class="nav-links">
             <li><a href="#projects" class="nav-link" onclick="setActive(this, '#projects', event)">Projects</a></li>
@@ -169,11 +295,32 @@
                 </div>
             </li>
         </ul>
-            <i class="fa-regular fa-file-lines resume-icon"
+
+        <!-- Hamburger Button (mobile only) -->
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileDrawer()" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <i class="fa-regular fa-file-lines resume-icon"
             onclick="window.open('/resume', '_blank')" title="Resume"></i>
         <div class="spacer"></div>
     </div>
 </nav>
+
+<!-- Mobile Fullscreen Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+    <a href="#home" onclick="mobileNavTo('#home', event)">Home</a>
+    <a href="#projects" onclick="mobileNavTo('#projects', event)">Projects</a>
+    <a href="#experience" onclick="mobileNavTo('#experience', event)">Experience</a>
+    <a href="#education" onclick="mobileNavTo('#education', event)">Education</a>
+    <div class="mobile-social-icons">
+        <a onclick="window.open('https://www.linkedin.com/in/ayush-lahiri')" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a onclick="window.open('https://github.com/ayushL2007')" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:ayushlahiri2007@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+</div>
 <script>
     // 1. NAVIGATION LOGIC (No Audio trigger here)
     function setActive(element, name, event) {
@@ -218,6 +365,31 @@
 
     function handleContactMouseLeave() {
         document.getElementById('contactWrapper').classList.remove('expanded');
+    }
+
+    // 5. MOBILE DRAWER LOGIC
+    function toggleMobileDrawer() {
+        const drawer = document.getElementById('mobileDrawer');
+        const hamburger = document.getElementById('hamburgerBtn');
+        drawer.classList.toggle('open');
+        hamburger.classList.toggle('active');
+        document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+    }
+
+    function closeMobileDrawer() {
+        const drawer = document.getElementById('mobileDrawer');
+        const hamburger = document.getElementById('hamburgerBtn');
+        drawer.classList.remove('open');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function mobileNavTo(target, event) {
+        if (event) event.preventDefault();
+        closeMobileDrawer();
+        setTimeout(() => {
+            setActive(null, target, null);
+        }, 100);
     }
 
     // 4. SCROLL OBSERVER (The "Auto-Change URL" logic)

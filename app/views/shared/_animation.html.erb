@@ -85,6 +85,21 @@
         border-color: rgba(255, 255, 255, 0.2);
         color: #fff;
     }
+
+    /* --- MOBILE RESPONSIVE --- */
+    @media (max-width: 768px) {
+        #cursor-glow {
+            display: none; /* No mouse cursor on touch devices */
+        }
+
+        .audio-toggle-btn {
+            top: auto;
+            bottom: 20px;
+            left: 20px;
+            width: 42px;
+            height: 42px;
+        }
+    }
 </style>
 
 <script>

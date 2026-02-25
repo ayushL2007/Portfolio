@@ -15,10 +15,18 @@
         padding-top: 10vh; 
         width: 100%;
         margin-left: 20%;
-        max-width: 1200px; /* Limits width for better readability */
+        max-width: 1200px;
         transform: scale(1.1); 
         animation: revealAndScale 2.2s ease-out forwards;
-        margin-bottom: 100px; /* Space before the next section */
+        margin-bottom: 100px;
+    }
+
+    @media (max-width: 768px) {
+        .home {
+            margin-left: 0;
+            padding: 10vh 5vw 0 5vw;
+            margin-bottom: 40px;
+        }
     }
 
     @keyframes revealAndScale {
@@ -40,6 +48,12 @@
         width: 43vw; 
         max-width: 1300px;
         text-align: left;
+    }
+
+    @media (max-width: 768px) {
+        .writing-container {
+            width: 90vw;
+        }
     }
 
     /* THE ANIMATION */
@@ -88,7 +102,26 @@
         align-items: center;
         border-radius: 20px;
         overflow: hidden;
-        position: relative; /* Added to allow absolute positioning of the tag */
+        position: relative;
+    }
+
+    @media (max-width: 768px) {
+        .content-row {
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .text-section {
+            max-width: 100%;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .photo-frame {
+            max-width: 220px;
+            border-width: 5px;
+        }
     }
 
     .photo-frame img {
@@ -161,29 +194,36 @@
     </div>
 </div>
 
-<hr style="min-width: 90%; max-height: 1px; border: none; background-color: #333; margin-bottom: 20px;">
+<hr style="width: 90%; max-width: 1100px; height: 1px; border: none; background-color: #333; margin: 0 auto 20px auto;">
 
 <script>
     window.addEventListener('scroll', () => {
         const scrollValue = window.scrollY;
         const textSection = document.querySelector('.text-section');
         const photoFrame = document.querySelector('.photo-frame');
+        const isMobile = window.innerWidth <= 768;
 
-        // Animation logic
-        if (scrollValue < 800) { 
-            const textMove = scrollValue * -0.5; 
-            const photoMove = scrollValue * 0.4;
-            const opacityValue = 1 - (scrollValue / 500); 
-
-            textSection.style.transform = `translateX(${textMove}px)`;
-            photoFrame.style.transform = `translateX(${photoMove}px)`;
-            
-            textSection.style.opacity = opacityValue;
-            photoFrame.style.opacity = opacityValue;
-            
-            // Optimization: Hide them when they are invisible
-            textSection.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
-            photoFrame.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+        if (scrollValue < 800) {
+            if (isMobile) {
+                // On mobile: fade out only, no horizontal movement
+                const opacityValue = 1 - (scrollValue / 400);
+                textSection.style.transform = 'none';
+                photoFrame.style.transform = 'none';
+                textSection.style.opacity = Math.max(opacityValue, 0);
+                photoFrame.style.opacity = Math.max(opacityValue, 0);
+                textSection.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+                photoFrame.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+            } else {
+                const textMove = scrollValue * -0.5; 
+                const photoMove = scrollValue * 0.4;
+                const opacityValue = 1 - (scrollValue / 500);
+                textSection.style.transform = `translateX(${textMove}px)`;
+                photoFrame.style.transform = `translateX(${photoMove}px)`;
+                textSection.style.opacity = opacityValue;
+                photoFrame.style.opacity = opacityValue;
+                textSection.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+                photoFrame.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+            }
         }
     });
 </script>
