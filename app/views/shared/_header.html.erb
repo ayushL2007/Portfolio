@@ -327,18 +327,22 @@
     // 1. NAVIGATION LOGIC (No Audio trigger here)
     function setActive(element, name, event) {
         if (event) event.preventDefault();
+
+        // If the target section doesn't exist on this page, navigate to the portfolio root with the hash
+        const target = document.querySelector(name);
+        if (!target) {
+            window.location.href = '/' + name;
+            return;
+        }
         
         // Update URL hash without snap
         history.pushState(null, null, name);
         
         // Smooth scroll to target
-        const target = document.querySelector(name);
-        if (target) {
-            target.scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        target.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
 
         // Update the purple active state
         updateNavbarUI(name.replace('#', ''));
@@ -389,12 +393,28 @@
     function mobileNavTo(target, event) {
         if (event) event.preventDefault();
         closeMobileDrawer();
+
+        // If the target section doesn't exist on this page, navigate to portfolio root
+        const section = document.querySelector(target);
+        if (!section) {
+            window.location.href = '/' + target;
+            return;
+        }
+
         setTimeout(() => {
             setActive(null, target, null);
         }, 100);
     }
 
-    // 4. SCROLL OBSERVER (The "Auto-Change URL" logic)
+    // 4. HIGHLIGHT GAMES LINK IF ON /games PAGE
+    document.addEventListener("DOMContentLoaded", () => {
+        if (window.location.pathname === '/games') {
+            const gamesLink = document.querySelector('.nav-link[href="/games"]');
+            if (gamesLink) gamesLink.classList.add('active');
+        }
+    });
+
+    // 5. SCROLL OBSERVER (The "Auto-Change URL" logic)
     document.addEventListener("DOMContentLoaded", () => {
         // Target your specific section IDs
         const sections = document.querySelectorAll('#home, #projects, #experience, #education');
