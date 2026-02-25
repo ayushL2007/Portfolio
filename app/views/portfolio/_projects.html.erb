@@ -106,6 +106,14 @@
             inset -3px -3px 6px rgba(0, 0, 0, 0.08);
     }
 
+    /* Alternating color accents per tile */
+    .crystal-tile:nth-child(3n+1) { border-left: 5px solid #7c3aed; }
+    .crystal-tile:nth-child(3n+2) { border-left: 5px solid #e05a5a; }
+    .crystal-tile:nth-child(3n)   { border-left: 5px solid #4a9fd8; }
+
+    .crystal-tile h2 { color: #2d2248; }
+    .crystal-tile p { color: #5a4f72; }
+
     /* Styling for the image container */
     .project-demo-container {
         width: 100%;
@@ -189,20 +197,20 @@
             inset -2px -2px 4px rgba(0, 0, 0, 0.06);
     }
 
-    /* 5. HEADER PILL (CLAYMORPHISM) */
+    /* 5. HEADER PILL (CLAYMORPHISM + COLOR) */
     .content-header-pill {
         width: fit-content;
         padding: 15px 40px;
         margin: 40px auto;
         border-radius: 50px;
-        background: #e8e4f0;
+        background: linear-gradient(145deg, #ede0f5, #d8cceb);
         border: none;
-        color: #4a4060;
+        color: #5b2d9e;
         box-shadow:
-            8px 8px 16px rgba(0, 0, 0, 0.1),
+            8px 8px 16px rgba(90, 40, 160, 0.12),
             -6px -6px 14px rgba(255, 255, 255, 0.6),
             inset 2px 2px 5px rgba(255, 255, 255, 0.55),
-            inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+            inset -2px -2px 4px rgba(90, 40, 160, 0.06);
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 2px;

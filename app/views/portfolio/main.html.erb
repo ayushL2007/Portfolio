@@ -77,13 +77,13 @@
         max-width: 50%;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 150%;
-        color: #4a4060;
+        color: #3d3455;
         margin-top: 1%;
         line-height: 1.6;
         padding: 28px;
         border-radius: 28px;
-        background: #e8e4f0;
-        border: none;
+        background: linear-gradient(145deg, #ece8f4, #dfd8ec);
+        border-left: 5px solid #7c3aed;
         box-shadow:
             8px 8px 16px rgba(0, 0, 0, 0.1),
             -6px -6px 14px rgba(255, 255, 255, 0.65),
@@ -92,6 +92,7 @@
     }
 
     .text-section a { color: inherit; }
+    .text-section b { color: #2d2248; }
 
     /* --- VISUAL COLUMN: CLAY MODEL --- */
     .visual-column {
@@ -104,23 +105,32 @@
 
     .clay-model-container {
         width: 100%;
-        max-width: 380px;
-        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        filter: drop-shadow(0 12px 24px rgba(90, 60, 140, 0.18));
+        max-width: 360px;
+        border-radius: 40px;
+        overflow: hidden;
+        background: linear-gradient(145deg, #d6d0e2, #f0ecf6);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                    box-shadow 0.4s ease;
+        box-shadow:
+            12px 12px 24px rgba(90, 60, 140, 0.16),
+            -8px -8px 18px rgba(255, 255, 255, 0.55),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.5),
+            inset -2px -2px 5px rgba(90, 60, 140, 0.08);
     }
 
     .clay-model-container:hover {
-        transform: scale(1.04) translateY(-4px);
-        filter: drop-shadow(0 18px 32px rgba(90, 60, 140, 0.24));
+        transform: scale(1.04) translateY(-6px);
+        box-shadow:
+            16px 16px 32px rgba(90, 60, 140, 0.2),
+            -10px -10px 22px rgba(255, 255, 255, 0.65),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.6),
+            inset -3px -3px 6px rgba(90, 60, 140, 0.1);
     }
 
     .clay-model-container img {
         width: 100%;
         height: auto;
         display: block;
-        /* Fade only the very bottom edge and outer corners so the bg blends seamlessly */
-        mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
     }
 
     /* --- CLAY HR SEPARATOR --- */
@@ -131,7 +141,8 @@
         border: none;
         border-radius: 50px;
         margin: 0 auto 30px auto;
-        background: #e0dce8;
+        background: linear-gradient(90deg, #7c3aed, #e05a5a, #e8a830, #3daa60, #4a9fd8);
+        opacity: 0.5;
         box-shadow:
             4px 4px 10px rgba(0, 0, 0, 0.08),
             -3px -3px 8px rgba(255, 255, 255, 0.6),
@@ -154,7 +165,11 @@
         }
 
         .visual-column {
-            max-width: 240px;
+            max-width: 260px;
+        }
+
+        .clay-model-container {
+            border-radius: 30px;
         }
     }
 

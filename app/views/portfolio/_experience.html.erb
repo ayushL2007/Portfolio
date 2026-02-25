@@ -17,7 +17,7 @@
 
     .timeline {
         position: relative;
-        border-left: 4px solid #ddd8e8;
+        border-left: 4px solid #c4b5e0;
         margin-left: 30px;
         padding-left: 40px;
     }
@@ -56,10 +56,10 @@
 
     /* --- CLAY CONTENT CARD --- */
     .timeline-content {
-        background: #e8e4f0;
+        background: linear-gradient(145deg, #ece8f4, #dfd8ec);
         padding: 24px;
         border-radius: 22px;
-        border: none;
+        border-left: 4px solid #7c3aed;
         color: #4a4060;
         box-shadow:
             8px 8px 16px rgba(0, 0, 0, 0.08),
@@ -75,6 +75,7 @@
             -8px -8px 18px rgba(255, 255, 255, 0.65),
             inset 3px 3px 6px rgba(255, 255, 255, 0.6),
             inset -2px -2px 5px rgba(0, 0, 0, 0.06);
+        border-left-color: #9d5cff;
     }
 
     .timeline-content h3 { margin: 0; font-size: 1.5rem; color: #2d2248; }
@@ -83,8 +84,8 @@
     .timeline-content ul { margin: 10px 0 0 20px; padding: 0; }
     .timeline-content li { margin-bottom: 5px; color: #4a4060; }
 
-    /* --- EDUCATION CLAY DOT (MAROON) --- */
-    #education .timeline { border-left-color: #ddd8e8; }
+    /* --- EDUCATION SECTION OVERRIDES --- */
+    #education .timeline { border-left-color: #d4a8a8; }
     #education .timeline-dot {
         background: #c44040;
         box-shadow:
@@ -97,6 +98,17 @@
     #education .timeline-date {
         color: #c44040;
     }
+
+    #education .timeline-content {
+        background: linear-gradient(145deg, #f4e8e8, #ecd8d8);
+        border-left: 4px solid #c44040;
+    }
+
+    #education .timeline-content:hover {
+        border-left-color: #e05a5a;
+    }
+
+    #education .timeline-content h3 { color: #5a1a1a; }
 
     /* Animation State */
     .timeline-item.revealed {
