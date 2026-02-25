@@ -5,19 +5,24 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
     html { scroll-behavior: smooth; }
 
-    /* --- 2. CENTERED NAVBAR WITH LOAD ANIMATION --- */
+    /* --- 2. CENTERED NAVBAR WITH LOAD ANIMATION (CLAYMORPHISM) --- */
     .navbar {
         position: fixed;
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
         height: 60px;
-        background-color: #a9a8a8;
+        background: #e0dce8;
         border-radius: 50px;
         display: flex;
         align-items: center;
         z-index: 1000;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: none;
+        box-shadow:
+            8px 8px 18px rgba(0, 0, 0, 0.12),
+            -6px -6px 14px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.55),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.06);
         overflow: hidden;
         
         width: 0;
@@ -72,7 +77,7 @@
 
     .nav-link {
         text-decoration: none;
-        color: #333;
+        color: #4a4060;
         font-weight: 600;
         font-size: 15px;
         padding-bottom: 4px;
@@ -83,11 +88,11 @@
     }
 
     .nav-link.active {
-        color: purple !important;
-        border-bottom: 2px solid purple !important;
+        color: #7c3aed !important;
+        border-bottom: 2px solid #7c3aed !important;
     }
 
-    .nav-link:hover { color: purple !important; }
+    .nav-link:hover { color: #7c3aed !important; }
 
     /* --- 3. EXPANDING CONTACT LOGIC --- */
     .contact-item {
@@ -119,18 +124,18 @@
 
     .social-icons a {
         text-decoration: none;
-        color: #333;
+        color: #4a4060;
         font-size: 18px;
         transition: color 0.2s, transform 0.2s;
     }
 
     .social-icons a:hover {
-        color: purple;
+        color: #7c3aed;
         transform: scale(1.2);
     }
 
     .resume-icon {
-        color: #333; 
+        color: #4a4060; 
         display: flex; 
         justify-self: end; 
         text-decoration: none; 
@@ -177,7 +182,7 @@
         transform: rotate(-45deg) translate(5px, -5px);
     }
 
-    /* --- MOBILE DRAWER --- */
+    /* --- MOBILE DRAWER (CLAYMORPHISM) --- */
     .mobile-drawer {
         display: none;
         position: fixed;
@@ -185,13 +190,12 @@
         left: 0;
         width: 100%;
         height: 100vh;
-        background: rgba(169, 168, 168, 0.97);
-        backdrop-filter: blur(20px);
+        background: #e8e4f0;
         z-index: 999;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 30px;
+        gap: 16px;
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.4s ease;
@@ -204,21 +208,32 @@
 
     .mobile-drawer a {
         text-decoration: none;
-        color: #333;
+        color: #4a4060;
         font-weight: 700;
-        font-size: 1.5rem;
-        padding: 10px 30px;
-        border-radius: 12px;
+        font-size: 1.3rem;
+        padding: 14px 36px;
+        border-radius: 20px;
+        background: #e8e4f0;
+        border: none;
+        box-shadow:
+            6px 6px 14px rgba(0, 0, 0, 0.1),
+            -5px -5px 12px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.04);
         transition: all 0.3s ease;
     }
 
     .mobile-drawer a.active {
-        color: purple;
+        color: #7c3aed;
     }
 
     .mobile-drawer a:hover {
-        color: purple;
-        background: rgba(128, 0, 128, 0.08);
+        color: #7c3aed;
+        box-shadow:
+            8px 8px 18px rgba(0, 0, 0, 0.13),
+            -6px -6px 14px rgba(255, 255, 255, 0.7),
+            inset 3px 3px 5px rgba(255, 255, 255, 0.6),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.06);
     }
 
     .mobile-drawer .mobile-social-icons {

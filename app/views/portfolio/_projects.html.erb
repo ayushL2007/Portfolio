@@ -65,7 +65,7 @@
 
     
 
-    /* 2. THE PROJECTS GRID & TILES */
+    /* 2. THE PROJECTS GRID & TILES (CLAYMORPHISM) */
     .projects-grid {
         display: flex;
         flex-wrap: wrap;
@@ -80,33 +80,43 @@
         flex: 1 1 calc(33.333% - 40px); 
         min-width: 300px;
         max-width: 400px;
-        padding: 40px;
-        border-radius: 24px;
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.7);
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        padding: 36px;
+        border-radius: 28px;
+        background: #e8e4f0;
+        border: none;
+        box-shadow:
+            10px 10px 20px rgba(0, 0, 0, 0.1),
+            -8px -8px 18px rgba(255, 255, 255, 0.6),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.55),
+            inset -2px -2px 5px rgba(0, 0, 0, 0.06);
         text-align: center;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        color: #4a4060;
     }
 
     .crystal-tile:hover {
-        transform: translateY(-10px);
-        background: rgba(255, 255, 255, 0.6);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow:
+            14px 14px 28px rgba(0, 0, 0, 0.13),
+            -10px -10px 22px rgba(255, 255, 255, 0.7),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.65),
+            inset -3px -3px 6px rgba(0, 0, 0, 0.08);
     }
 
-    /* Styling for the new image container */
+    /* Styling for the image container */
     .project-demo-container {
         width: 100%;
-        height: 180px; /* Fixed height for consistency */
+        height: 180px;
         overflow: hidden;
-        border-radius: 16px; /* Slightly less than the tile for a nested look */
+        border-radius: 20px;
         margin-bottom: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: none;
+        box-shadow:
+            inset 3px 3px 6px rgba(0, 0, 0, 0.08),
+            inset -2px -2px 5px rgba(255, 255, 255, 0.5);
     }
 
     .project-demo-img {
@@ -150,9 +160,9 @@
     }
 
     #toggle-projects-btn {
-        background: rgba(255, 255, 255, 0.3);
-        border: 1px solid #362c2c60;
-        color: #1b1717;
+        background: #e8e4f0;
+        border: none;
+        color: #4a4060;
         width: 60px;
         height: 60px;
         border-radius: 50%;
@@ -162,24 +172,37 @@
         justify-content: center;
         transition: all 0.3s ease;
         font-size: 1.2rem;
+        box-shadow:
+            6px 6px 14px rgba(0, 0, 0, 0.1),
+            -5px -5px 12px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.04);
     }
 
     #toggle-projects-btn:hover {
-        background: #2e28286c;
-        color: white;
+        color: #7c3aed;
         transform: scale(1.1);
+        box-shadow:
+            8px 8px 18px rgba(0, 0, 0, 0.12),
+            -6px -6px 14px rgba(255, 255, 255, 0.7),
+            inset 3px 3px 5px rgba(255, 255, 255, 0.6),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.06);
     }
 
-    /* 5. HEADER PILL */
+    /* 5. HEADER PILL (CLAYMORPHISM) */
     .content-header-pill {
         width: fit-content;
         padding: 15px 40px;
         margin: 40px auto;
-        border-radius: 25%;
-        background: var(--pill-color, rgba(255, 255, 255, 0.4));
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        border-radius: 50px;
+        background: #e8e4f0;
+        border: none;
+        color: #4a4060;
+        box-shadow:
+            8px 8px 16px rgba(0, 0, 0, 0.1),
+            -6px -6px 14px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.55),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.05);
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 2px;
