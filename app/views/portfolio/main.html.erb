@@ -96,7 +96,7 @@
     /* --- VISUAL COLUMN: CLAY MODEL --- */
     .visual-column {
         flex: 20;
-        max-width: 400px;
+        max-width: 380px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -104,20 +104,23 @@
 
     .clay-model-container {
         width: 100%;
-        max-width: 400px;
+        max-width: 380px;
         transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        filter: drop-shadow(0 12px 24px rgba(90, 60, 140, 0.18));
     }
 
     .clay-model-container:hover {
-        transform: scale(1.03);
+        transform: scale(1.04) translateY(-4px);
+        filter: drop-shadow(0 18px 32px rgba(90, 60, 140, 0.24));
     }
 
     .clay-model-container img {
         width: 100%;
         height: auto;
         display: block;
-        mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, black 60%, transparent 100%);
-        -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, black 60%, transparent 100%);
+        /* Fade only the very bottom edge and outer corners so the bg blends seamlessly */
+        mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
     }
 
     /* --- CLAY HR SEPARATOR --- */
