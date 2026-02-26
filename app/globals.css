@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: #1a1c2c;
+  --color-foreground: #f4f4f5;
+  --color-card: #262840;
+  --color-card-foreground: #f4f4f5;
+  --color-popover: #262840;
+  --color-popover-foreground: #f4f4f5;
+  --color-primary: #e8433f;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #3e8948;
+  --color-secondary-foreground: #ffffff;
+  --color-muted: #333555;
+  --color-muted-foreground: #a0a3b8;
+  --color-accent: #f7d51d;
+  --color-accent-foreground: #1a1c2c;
+  --color-destructive: #e8433f;
+  --color-destructive-foreground: #ffffff;
+  --color-border: #3d3f5c;
+  --color-input: #3d3f5c;
+  --color-ring: #e8433f;
+  --color-chart-1: #e8433f;
+  --color-chart-2: #3e8948;
+  --color-chart-3: #f7d51d;
+  --color-chart-4: #5b6ee1;
+  --color-chart-5: #639bff;
+  --color-sidebar: #1a1c2c;
+  --color-sidebar-foreground: #f4f4f5;
+  --color-sidebar-primary: #e8433f;
+  --color-sidebar-primary-foreground: #ffffff;
+  --color-sidebar-accent: #333555;
+  --color-sidebar-accent-foreground: #f4f4f5;
+  --color-sidebar-border: #3d3f5c;
+  --color-sidebar-ring: #e8433f;
+  --radius: 0.25rem;
+  --font-sans: "Press Start 2P", monospace;
+  --font-mono: "Press Start 2P", monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    image-rendering: pixelated;
+  }
+}
