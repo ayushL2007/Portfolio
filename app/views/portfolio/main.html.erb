@@ -1,10 +1,10 @@
 <style>
     body {
-        background-color: #f0f0f0;
+        background-color: #e8e4f0;
         margin: 0;
         display: flex;
-        flex-direction: column; /* This ensures sections stack vertically */
-        align-items: center;    /* Centers the sections horizontally */
+        flex-direction: column;
+        align-items: center;
         min-height: 100vh;
         overflow-x: hidden;
         cursor: url(<%=image_path "cursor.png"%>), default !important;
@@ -15,25 +15,24 @@
         padding-top: 10vh; 
         width: 100%;
         margin-left: 20%;
-        max-width: 1200px; /* Limits width for better readability */
+        max-width: 1200px;
         transform: scale(1.1); 
         animation: revealAndScale 2.2s ease-out forwards;
-        margin-bottom: 100px; /* Space before the next section */
+        margin-bottom: 100px;
+    }
+
+    @media (max-width: 768px) {
+        .home {
+            margin-left: 0;
+            padding: 10vh 5vw 0 5vw;
+            margin-bottom: 40px;
+        }
     }
 
     @keyframes revealAndScale {
-        0% {
-            opacity: 0;
-            transform: scale(1.1);
-        }
-        60%{
-            transform: scale(1.08);
-            opacity: 0.5;
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1); /* Settles to original size */
-        }
+        0% { opacity: 0; transform: scale(1.1); }
+        60% { transform: scale(1.08); opacity: 0.5; }
+        100% { opacity: 1; transform: scale(1); }
     }
 
     .writing-container {
@@ -42,12 +41,18 @@
         text-align: left;
     }
 
+    @media (max-width: 768px) {
+        .writing-container {
+            width: 90vw;
+        }
+    }
+
     /* THE ANIMATION */
     .cursive-path {
         stroke-dasharray: 5100;
         stroke-dashoffset: 5100;
         animation: write 8s ease-in-out forwards;
-        stroke: url(#silverGradient); /* This links to the gradient below */
+        stroke: url(#silverGradient);
         stroke-width: 0.8; 
         fill: none;
         stroke-linecap: round;
@@ -66,50 +71,120 @@
         align-items: flex-start;
     }
 
+    /* --- CLAYMORPHISM TEXT CARD --- */
     .text-section {
         flex: 10;
         max-width: 50%;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 150%;
-        color: #555;
+        color: #3d3455;
         margin-top: 1%;
         line-height: 1.6;
+        padding: 28px;
+        border-radius: 28px;
+        background: linear-gradient(145deg, #ece8f4, #dfd8ec);
+        border-left: 5px solid #7c3aed;
+        box-shadow:
+            8px 8px 16px rgba(0, 0, 0, 0.1),
+            -6px -6px 14px rgba(255, 255, 255, 0.65),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.6),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.05);
     }
 
-    .photo-frame {
+    .text-section a { color: inherit; }
+    .text-section b { color: #2d2248; }
+
+    /* --- VISUAL COLUMN: CLAY MODEL --- */
+    .visual-column {
         flex: 20;
-        max-width: 400px;
-        aspect-ratio: 1 / 1;
-        border: 8px solid white;
-        background: #e0e0e0;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        max-width: 380px;
         display: flex;
-        justify-content: center;
         align-items: center;
-        border-radius: 20px;
-        overflow: hidden;
-        position: relative; /* Added to allow absolute positioning of the tag */
+        justify-content: center;
     }
 
-    .photo-frame img {
+    .clay-model-container {
         width: 100%;
-        height: 100%;
-        object-fit: cover;
+        max-width: 360px;
+        border-radius: 40px;
+        overflow: hidden;
+        background: linear-gradient(145deg, #d6d0e2, #f0ecf6);
+        transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                    box-shadow 0.4s ease;
+        box-shadow:
+            12px 12px 24px rgba(90, 60, 140, 0.16),
+            -8px -8px 18px rgba(255, 255, 255, 0.55),
+            inset 3px 3px 6px rgba(255, 255, 255, 0.5),
+            inset -2px -2px 5px rgba(90, 60, 140, 0.08);
+    }
+
+    .clay-model-container:hover {
+        transform: scale(1.04) translateY(-6px);
+        box-shadow:
+            16px 16px 32px rgba(90, 60, 140, 0.2),
+            -10px -10px 22px rgba(255, 255, 255, 0.65),
+            inset 4px 4px 8px rgba(255, 255, 255, 0.6),
+            inset -3px -3px 6px rgba(90, 60, 140, 0.1);
+    }
+
+    .clay-model-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* --- CLAY HR SEPARATOR --- */
+    .clay-separator {
+        width: 90%;
+        max-width: 1100px;
+        height: 6px;
+        border: none;
+        border-radius: 50px;
+        margin: 0 auto 30px auto;
+        background: linear-gradient(90deg, #7c3aed, #e05a5a, #e8a830, #3daa60, #4a9fd8);
+        opacity: 0.5;
+        box-shadow:
+            4px 4px 10px rgba(0, 0, 0, 0.08),
+            -3px -3px 8px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    @media (max-width: 768px) {
+        .content-row {
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .text-section {
+            max-width: 100%;
+            font-size: 1rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .visual-column {
+            max-width: 260px;
+        }
+
+        .clay-model-container {
+            border-radius: 30px;
+        }
     }
 
     /* Initial state: elements are in their normal position */
-    .text-section, .photo-frame {
+    .text-section, .visual-column {
         transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.8s ease;
         will-change: transform, opacity;
     }
 
-    /* Scrolled state: Text moves left, Photo moves right, both fade slightly */
     .scrolled-out .text-section {
         transform: translateX(-150px);
         opacity: 0;
     }
 
-    .scrolled-out .photo-frame {
+    .scrolled-out .visual-column {
         transform: translateX(150px);
         opacity: 0;
     }
@@ -135,55 +210,43 @@
             </p>
         </div>
         
-        <div class="photo-frame">
-            <img src="https://avatars.githubusercontent.com/u/85987898?s=400" alt="Profile Picture">
-            
-            <div style="
-                position: absolute;
-                bottom: 12px;
-                background-color: rgb(85, 255, 96);
-                color: #ffffff;
-                border: 2px solid #000000;
-                padding: 4px 14px;
-                border-radius: 20px;
-                font-family: 'Segoe UI', sans-serif;
-                font-weight: 700;
-                font-size: 13px;
-                text-transform: uppercase;
-                letter-spacing: 0.8px;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-                white-space: nowrap;
-                pointer-events: none; /* Tag won't interfere with image clicks */
-            ">
-                #OpenToWork
+        <div class="visual-column">
+            <div class="clay-model-container">
+                <img src="/images/clay-human.jpg" alt="Clay 3D model of a developer">
             </div>
         </div>
     </div>
 </div>
 
-<hr style="min-width: 90%; max-height: 1px; border: none; background-color: #333; margin-bottom: 20px;">
+<div class="clay-separator"></div>
 
 <script>
     window.addEventListener('scroll', () => {
         const scrollValue = window.scrollY;
         const textSection = document.querySelector('.text-section');
-        const photoFrame = document.querySelector('.photo-frame');
+        const visualCol = document.querySelector('.visual-column');
+        const isMobile = window.innerWidth <= 768;
 
-        // Animation logic
-        if (scrollValue < 800) { 
-            const textMove = scrollValue * -0.5; 
-            const photoMove = scrollValue * 0.4;
-            const opacityValue = 1 - (scrollValue / 500); 
-
-            textSection.style.transform = `translateX(${textMove}px)`;
-            photoFrame.style.transform = `translateX(${photoMove}px)`;
-            
-            textSection.style.opacity = opacityValue;
-            photoFrame.style.opacity = opacityValue;
-            
-            // Optimization: Hide them when they are invisible
-            textSection.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
-            photoFrame.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+        if (scrollValue < 800) {
+            if (isMobile) {
+                const opacityValue = 1 - (scrollValue / 400);
+                textSection.style.transform = 'none';
+                visualCol.style.transform = 'none';
+                textSection.style.opacity = Math.max(opacityValue, 0);
+                visualCol.style.opacity = Math.max(opacityValue, 0);
+                textSection.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+                visualCol.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+            } else {
+                const textMove = scrollValue * -0.5; 
+                const photoMove = scrollValue * 0.4;
+                const opacityValue = 1 - (scrollValue / 500);
+                textSection.style.transform = `translateX(${textMove}px)`;
+                visualCol.style.transform = `translateX(${photoMove}px)`;
+                textSection.style.opacity = opacityValue;
+                visualCol.style.opacity = opacityValue;
+                textSection.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+                visualCol.style.visibility = opacityValue <= 0 ? 'hidden' : 'visible';
+            }
         }
     });
 </script>

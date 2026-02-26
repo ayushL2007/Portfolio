@@ -5,30 +5,32 @@
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
     html { scroll-behavior: smooth; }
 
-    /* --- 2. CENTERED NAVBAR WITH LOAD ANIMATION --- */
+    /* --- 2. CENTERED NAVBAR WITH LOAD ANIMATION (CLAYMORPHISM) --- */
     .navbar {
         position: fixed;
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
         height: 60px;
-        background-color: #a9a8a8;
+        background: linear-gradient(135deg, #e4dff0, #ddd6ec, #e4dff0);
         border-radius: 50px;
         display: flex;
         align-items: center;
         z-index: 1000;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        overflow: hidden; /* Clips content during growth */
+        border: none;
+        box-shadow:
+            8px 8px 18px rgba(0, 0, 0, 0.12),
+            -6px -6px 14px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 5px rgba(255, 255, 255, 0.55),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
         
-        /* Initial Animation State */
         width: 0;
         opacity: 0;
         animation: expandNav 3.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         animation-delay: 1.6s;
-
     }
 
-    /* Nav container fade-in happens after the bar expands */
     .nav-container {
         width: 100%;
         display: grid;
@@ -61,8 +63,8 @@
     }
 
     .home-icon.active{
-        fill: purple !important;
-        color: purple !important;
+        fill: #7c3aed !important;
+        color: #7c3aed !important;
     }
 
     .nav-links {
@@ -75,7 +77,7 @@
 
     .nav-link {
         text-decoration: none;
-        color: #333;
+        color: #4a4060;
         font-weight: 600;
         font-size: 15px;
         padding-bottom: 4px;
@@ -86,11 +88,11 @@
     }
 
     .nav-link.active {
-        color: purple !important;
-        border-bottom: 2px solid purple !important;
+        color: #7c3aed !important;
+        border-bottom: 2px solid #7c3aed !important;
     }
 
-    .nav-link:hover { color: purple !important; }
+    .nav-link:hover { color: #7c3aed !important; }
 
     /* --- 3. EXPANDING CONTACT LOGIC --- */
     .contact-item {
@@ -122,18 +124,18 @@
 
     .social-icons a {
         text-decoration: none;
-        color: #333;
+        color: #4a4060;
         font-size: 18px;
         transition: color 0.2s, transform 0.2s;
     }
 
     .social-icons a:hover {
-        color: purple;
+        color: #7c3aed;
         transform: scale(1.2);
     }
 
     .resume-icon {
-        color: #333; 
+        color: #4a4060; 
         display: flex; 
         justify-self: end; 
         text-decoration: none; 
@@ -147,18 +149,158 @@
         transform: scale(1.4);
     }
 
-    .spacer { width: 24px; justify-self: end; } 
+    .spacer { width: 24px; justify-self: end; }
+
+    /* --- HAMBURGER BUTTON (hidden on desktop) --- */
+    .hamburger-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px;
+        z-index: 1001;
+    }
+
+    .hamburger-btn span {
+        display: block;
+        width: 22px;
+        height: 2.5px;
+        background-color: #333;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .hamburger-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger-btn.active span:nth-child(2) {
+        opacity: 0;
+    }
+    .hamburger-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* --- MOBILE DRAWER (CLAYMORPHISM) --- */
+    .mobile-drawer {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: #e8e4f0;
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.4s ease;
+    }
+
+    .mobile-drawer.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .mobile-drawer a {
+        text-decoration: none;
+        color: #4a4060;
+        font-weight: 700;
+        font-size: 1.3rem;
+        padding: 14px 36px;
+        border-radius: 20px;
+        background: #e8e4f0;
+        border: none;
+        box-shadow:
+            6px 6px 14px rgba(0, 0, 0, 0.1),
+            -5px -5px 12px rgba(255, 255, 255, 0.6),
+            inset 2px 2px 4px rgba(255, 255, 255, 0.5),
+            inset -1px -1px 3px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s ease;
+    }
+
+    .mobile-drawer a.active {
+        color: #7c3aed;
+    }
+
+    .mobile-drawer a:hover {
+        color: #7c3aed;
+        box-shadow:
+            8px 8px 18px rgba(0, 0, 0, 0.13),
+            -6px -6px 14px rgba(255, 255, 255, 0.7),
+            inset 3px 3px 5px rgba(255, 255, 255, 0.6),
+            inset -2px -2px 4px rgba(0, 0, 0, 0.06);
+    }
+
+    .mobile-drawer .mobile-social-icons {
+        display: flex;
+        gap: 25px;
+        margin-top: 10px;
+    }
+
+    .mobile-drawer .mobile-social-icons a {
+        font-size: 1.4rem;
+        padding: 10px;
+    }
+
+    /* --- MOBILE STYLES --- */
+    @media (max-width: 768px) {
+        @keyframes expandNav {
+            0% { width: 0%; opacity: 0; }
+            100% { width: 90%; max-width: 400px; opacity: 1; }
+        }
+
+        .navbar {
+            height: 54px;
+            top: 12px;
+        }
+
+        .nav-container {
+            grid-template-columns: auto 1fr auto;
+            padding: 0 18px;
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .hamburger-btn {
+            display: flex;
+            justify-self: center;
+        }
+
+        .mobile-drawer {
+            display: flex;
+        }
+
+        .resume-icon {
+            transform: scale(1.1);
+        }
+
+        .home-icon {
+            transform: scale(1.1);
+        }
+
+        .spacer {
+            display: none;
+        }
+    }
 </style>
 
 
 <nav class="navbar">
     <div class="nav-container">
-        <i class="fa-solid fa-house home-icon" onclick="setActive(this, '#home', event)"></i>
+        <i class="fa-solid fa-house home-icon" onclick="setActive(this, '#home', event); closeMobileDrawer();"></i>
 
         <ul class="nav-links">
             <li><a href="#projects" class="nav-link" onclick="setActive(this, '#projects', event)">Projects</a></li>
             <li><a href="#experience" class="nav-link" onclick="setActive(this, '#experience', event)">Experience</a></li>
             <li><a href="#education" class="nav-link" onclick="setActive(this, '#education', event)">Education</a></li>
+            <li><a href="/games" class="nav-link" onclick="event.stopPropagation()">Games</a></li>
             
             <li class="contact-item" id="contactWrapper" onmouseenter="toggleContact(event, this)" onmouseleave="handleContactMouseLeave()">
                 <a href="javascript:void(0)" style="margin-top: 5px;" class="nav-link" id="contactBtn">Contact</a>
@@ -169,27 +311,53 @@
                 </div>
             </li>
         </ul>
-            <i class="fa-regular fa-file-lines resume-icon"
+
+        <!-- Hamburger Button (mobile only) -->
+        <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileDrawer()" aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <i class="fa-regular fa-file-lines resume-icon"
             onclick="window.open('/resume', '_blank')" title="Resume"></i>
         <div class="spacer"></div>
     </div>
 </nav>
+
+<!-- Mobile Fullscreen Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+    <a href="#home" onclick="mobileNavTo('#home', event)">Home</a>
+    <a href="#projects" onclick="mobileNavTo('#projects', event)">Projects</a>
+    <a href="#experience" onclick="mobileNavTo('#experience', event)">Experience</a>
+    <a href="#education" onclick="mobileNavTo('#education', event)">Education</a>
+    <a href="/games" onclick="closeMobileDrawer()">Games</a>
+    <div class="mobile-social-icons">
+        <a onclick="window.open('https://www.linkedin.com/in/ayush-lahiri')" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a onclick="window.open('https://github.com/ayushL2007')" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="mailto:ayushlahiri2007@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+</div>
 <script>
     // 1. NAVIGATION LOGIC (No Audio trigger here)
     function setActive(element, name, event) {
         if (event) event.preventDefault();
+
+        // If the target section doesn't exist on this page, navigate to the portfolio root with the hash
+        const target = document.querySelector(name);
+        if (!target) {
+            window.location.href = '/' + name;
+            return;
+        }
         
         // Update URL hash without snap
         history.pushState(null, null, name);
         
         // Smooth scroll to target
-        const target = document.querySelector(name);
-        if (target) {
-            target.scrollIntoView({ 
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        target.scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
 
         // Update the purple active state
         updateNavbarUI(name.replace('#', ''));
@@ -220,7 +388,48 @@
         document.getElementById('contactWrapper').classList.remove('expanded');
     }
 
-    // 4. SCROLL OBSERVER (The "Auto-Change URL" logic)
+    // 5. MOBILE DRAWER LOGIC
+    function toggleMobileDrawer() {
+        const drawer = document.getElementById('mobileDrawer');
+        const hamburger = document.getElementById('hamburgerBtn');
+        drawer.classList.toggle('open');
+        hamburger.classList.toggle('active');
+        document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+    }
+
+    function closeMobileDrawer() {
+        const drawer = document.getElementById('mobileDrawer');
+        const hamburger = document.getElementById('hamburgerBtn');
+        drawer.classList.remove('open');
+        hamburger.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function mobileNavTo(target, event) {
+        if (event) event.preventDefault();
+        closeMobileDrawer();
+
+        // If the target section doesn't exist on this page, navigate to portfolio root
+        const section = document.querySelector(target);
+        if (!section) {
+            window.location.href = '/' + target;
+            return;
+        }
+
+        setTimeout(() => {
+            setActive(null, target, null);
+        }, 100);
+    }
+
+    // 4. HIGHLIGHT GAMES LINK IF ON /games PAGE
+    document.addEventListener("DOMContentLoaded", () => {
+        if (window.location.pathname === '/games') {
+            const gamesLink = document.querySelector('.nav-link[href="/games"]');
+            if (gamesLink) gamesLink.classList.add('active');
+        }
+    });
+
+    // 5. SCROLL OBSERVER (The "Auto-Change URL" logic)
     document.addEventListener("DOMContentLoaded", () => {
         // Target your specific section IDs
         const sections = document.querySelectorAll('#home, #projects, #experience, #education');
