@@ -1,0 +1,300 @@
+<style>
+    .poke-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .poke-title {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 8px;
+    }
+
+    .poke-info {
+        color: #aaa;
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .poke-info span { color: white; }
+
+    .poke-image-wrap {
+        width: 200px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    .poke-image-wrap img {
+        width: 180px;
+        height: 180px;
+        object-fit: contain;
+        image-rendering: pixelated;
+        transition: filter 0.5s ease;
+    }
+
+    .poke-image-wrap img.silhouette {
+        filter: brightness(0);
+    }
+
+    .poke-image-wrap .poke-loading {
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    .poke-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        width: 100%;
+        max-width: 400px;
+        margin-bottom: 20px;
+    }
+
+    .poke-option-btn {
+        padding: 14px 10px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-transform: capitalize;
+    }
+
+    .poke-option-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .poke-option-btn.correct {
+        background: rgba(46, 204, 113, 0.3);
+        border-color: rgba(46, 204, 113, 0.6);
+    }
+
+    .poke-option-btn.wrong {
+        background: rgba(231, 76, 60, 0.3);
+        border-color: rgba(231, 76, 60, 0.5);
+    }
+
+    .poke-option-btn:disabled {
+        cursor: default;
+        opacity: 0.8;
+    }
+
+    .poke-message {
+        color: #ccc;
+        font-size: 1.1rem;
+        font-weight: 600;
+        min-height: 30px;
+        margin-bottom: 12px;
+        text-align: center;
+    }
+
+    .poke-next-btn {
+        padding: 12px 36px;
+        border-radius: 50px;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: none;
+    }
+
+    .poke-next-btn.show { display: inline-block; }
+
+    .poke-next-btn:hover {
+        background: rgba(255,255,255,0.25);
+    }
+
+    .poke-final {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        color: white;
+    }
+
+    .poke-final.show { display: flex; }
+
+    .poke-final h2 {
+        font-size: 1.6rem;
+        font-weight: 800;
+    }
+
+    @media (max-width: 480px) {
+        .poke-image-wrap { width: 160px; height: 160px; }
+        .poke-image-wrap img { width: 150px; height: 150px; }
+        .poke-options { max-width: 100%; }
+        .poke-option-btn { font-size: 0.9rem; padding: 12px 8px; }
+    }
+</style>
+
+<div class="poke-container">
+    <div class="poke-title">Who's That Pokemon?</div>
+    <div class="poke-info">
+        Round: <span id="poke-round">1</span>/10 &nbsp;|&nbsp;
+        Score: <span id="poke-score">0</span>
+    </div>
+
+    <div class="poke-image-wrap" id="poke-image-wrap">
+        <span class="poke-loading" id="poke-loading">Loading...</span>
+    </div>
+
+    <div class="poke-message" id="poke-message"></div>
+
+    <div class="poke-options" id="poke-options"></div>
+
+    <button class="poke-next-btn" id="poke-next-btn" onclick="pokeNextRound()">Next</button>
+
+    <div class="poke-final" id="poke-final">
+        <h2 id="poke-final-text"></h2>
+        <button class="poke-next-btn show" onclick="pokeRestart()">Play Again</button>
+    </div>
+</div>
+
+<script>
+(function() {
+    let round, score, correctName, answered, pokemonCache;
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    async function fetchPokemon(id) {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const data = await res.json();
+        return {
+            name: data.name,
+            sprite: data.sprites.other['official-artwork'].front_default || data.sprites.front_default
+        };
+    }
+
+    function getRandomIds(count, max) {
+        const ids = new Set();
+        while (ids.size < count) ids.add(Math.floor(Math.random() * max) + 1);
+        return [...ids];
+    }
+
+    async function loadRound() {
+        answered = false;
+        const imageWrap = document.getElementById('poke-image-wrap');
+        const loading = document.getElementById('poke-loading');
+        const options = document.getElementById('poke-options');
+        const message = document.getElementById('poke-message');
+        const nextBtn = document.getElementById('poke-next-btn');
+
+        loading.style.display = 'block';
+        imageWrap.querySelectorAll('img').forEach(i => i.remove());
+        options.innerHTML = '';
+        message.textContent = '';
+        nextBtn.classList.remove('show');
+
+        document.getElementById('poke-round').textContent = round;
+
+        try {
+            const ids = getRandomIds(4, 386); // Gen 1-3
+            const pokemons = await Promise.all(ids.map(id => fetchPokemon(id)));
+            const correctIdx = Math.floor(Math.random() * 4);
+            correctName = pokemons[correctIdx].name;
+
+            loading.style.display = 'none';
+
+            const img = document.createElement('img');
+            img.src = pokemons[correctIdx].sprite;
+            img.alt = 'Pokemon silhouette';
+            img.className = 'silhouette';
+            img.crossOrigin = 'anonymous';
+            imageWrap.appendChild(img);
+
+            pokemons.forEach((p, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'poke-option-btn';
+                btn.textContent = capitalize(p.name);
+                btn.addEventListener('click', () => handleAnswer(btn, p.name, img));
+                options.appendChild(btn);
+            });
+        } catch (err) {
+            loading.textContent = 'Failed to load. Try again!';
+        }
+    }
+
+    function handleAnswer(btn, name, img) {
+        if (answered) return;
+        answered = true;
+
+        // Reveal the pokemon
+        img.classList.remove('silhouette');
+
+        const buttons = document.querySelectorAll('.poke-option-btn');
+        buttons.forEach(b => {
+            b.disabled = true;
+            if (b.textContent.toLowerCase() === correctName) b.classList.add('correct');
+        });
+
+        const message = document.getElementById('poke-message');
+
+        if (name === correctName) {
+            score++;
+            document.getElementById('poke-score').textContent = score;
+            message.textContent = 'Correct! It\'s ' + capitalize(correctName) + '!';
+            message.style.color = '#2ecc71';
+        } else {
+            btn.classList.add('wrong');
+            message.textContent = 'Wrong! It was ' + capitalize(correctName) + '.';
+            message.style.color = '#e74c3c';
+        }
+
+        if (round >= 10) {
+            setTimeout(showFinal, 1200);
+        } else {
+            document.getElementById('poke-next-btn').classList.add('show');
+        }
+    }
+
+    function showFinal() {
+        document.getElementById('poke-options').innerHTML = '';
+        document.getElementById('poke-next-btn').classList.remove('show');
+        document.getElementById('poke-image-wrap').querySelectorAll('img').forEach(i => i.remove());
+        document.getElementById('poke-loading').style.display = 'none';
+        document.getElementById('poke-message').textContent = '';
+
+        const final = document.getElementById('poke-final');
+        document.getElementById('poke-final-text').textContent = 'Final Score: ' + score + '/10';
+        final.classList.add('show');
+    }
+
+    function nextRound() {
+        round++;
+        loadRound();
+    }
+
+    function restart() {
+        round = 1; score = 0;
+        document.getElementById('poke-score').textContent = 0;
+        document.getElementById('poke-final').classList.remove('show');
+        loadRound();
+    }
+
+    window.pokeNextRound = nextRound;
+    window.pokeRestart = restart;
+
+    window.addEventListener('game-opened', (e) => {
+        if (e.detail.game === 'pokemon') restart();
+    });
+
+    round = 1; score = 0;
+})();
+</script>
