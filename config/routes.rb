@@ -16,4 +16,6 @@ Rails.application.routes.draw do
 
   get "/resume", to: "portfolio#resume"
   get "/games", to: "portfolio#games"
+
+  get "/up", to: "portfolio#up"
 end

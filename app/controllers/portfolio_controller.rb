@@ -15,6 +15,10 @@ class PortfolioController < ApplicationController
     def games
     end
 
+    def up
+        render plain: "OK", status: :ok
+    end
+
     def resume
         pdf_path = Rails.root.join('app', 'assets','documents', 'resume_ayush.pdf')
         send_file(pdf_path, filename: "Resume_Ayush_Lahiri.pdf", type: "application/pdf", disposition: "inline")  
