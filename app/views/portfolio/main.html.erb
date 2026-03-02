@@ -1,14 +1,27 @@
 <style>
-    body {
-        background-color: #e8e4f0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        overflow-x: hidden;
-        cursor: url(<%=image_path "cursor.png"%>), default !important;
-    }
+   body {
+    /* Soft neutral clay base */
+    background-color: #6f6e6c !important;
+
+    /* Gentle pastel mesh for clay depth */
+    background-image:
+        radial-gradient(at 20% 20%, rgba(124, 58, 237, 0.12) 0px, transparent 50%),
+        radial-gradient(at 80% 30%, rgba(255, 159, 67, 0.08) 0px, transparent 55%),
+        radial-gradient(at 70% 80%, rgba(72, 187, 120, 0.07) 0px, transparent 60%),
+        radial-gradient(at 10% 90%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
+
+    background-attachment: fixed;
+    background-blend-mode: normal;
+
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    cursor: url(<%=image_path "cursor.png"%>), default !important;
+}
 
     .home {
         display: block;
@@ -104,6 +117,7 @@
     }
 
     .clay-model-container {
+        margin-top: 10vh;
         width: 100%;
         max-width: 360px;
         border-radius: 40px;

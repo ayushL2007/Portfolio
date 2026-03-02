@@ -61,7 +61,7 @@ class RepoDetailsService
   def trim_description
       @repos.each do |repo|
           desc = repo.description
-          if desc.split.length > 20
+          if not desc.nil? and desc.split.length > 20
               desc = desc.split "."
               desc = desc[0..desc.length-2].join ". "  
           end
@@ -71,6 +71,7 @@ class RepoDetailsService
 
   private
   def arrange_project
+      @repos.each{|n| p n.id}
       picks = [1130246938, 1134846947, 1019955323]
       @best_repos =  @repos.select {|r| picks.include?(r.id)}
   end
