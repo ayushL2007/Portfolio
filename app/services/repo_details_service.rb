@@ -33,6 +33,7 @@ class RepoDetailsService
 
   private
   def fetch_repos(token)
+      p token
       # In your Controller or Service Object
       client = Octokit::Client.new(access_token: token)
 
@@ -75,3 +76,4 @@ class RepoDetailsService
   end
 
 end
+
